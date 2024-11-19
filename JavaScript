@@ -1,0 +1,55 @@
+// Lấy các phần tử từ DOM
+const taiBtn = document.getElementById('taiBtn');
+const xiuBtn = document.getElementById('xiuBtn');
+const resultText = document.getElementById('resultText');
+const rollBtn = document.getElementById('rollBtn');
+const historyList = document.getElementById('historyList');
+
+// Biến lưu trữ lựa chọn của người chơi
+let userChoice = null;
+
+// Lắng nghe sự kiện khi người chơi chọn Tài
+taiBtn.addEventListener('click', () => {
+  userChoice = 'Tài';
+  resultText.textContent = `Bạn đã chọn: ${userChoice}`;
+});
+
+// Lắng nghe sự kiện khi người chơi chọn Xỉu
+xiuBtn.addEventListener('click', () => {
+  userChoice = 'Xỉu';
+  resultText.textContent = `Bạn đã chọn: ${userChoice}`;
+});
+
+// Hàm để lắc xí ngầu và quyết định kết quả
+function rollDice() {
+  // Lắc 3 viên xí ngầu
+  const dice1 = Math.floor(Math.random() * 6) + 1;
+  const dice2 = Math.floor(Math.random() * 6) + 1;
+  const dice3 = Math.floor(Math.random() * 6) + 1;
+  
+  const total = dice1 + dice2 + dice3;
+  
+  // Tính kết quả Tài/Xỉu
+  const result = total >= 11 ? 'Tài' : 'Xỉu';
+
+  // Cập nhật kết quả vào giao diện
+  if (userChoice === result) {
+    resultText.textContent = `Kết quả: ${result}. Bạn thắng!`;
+  } else {
+    resultText.textContent = `Kết quả: ${result}. Bạn thua!`;
+  }
+
+  // Cập nhật lịch sử kết quả
+  const historyItem = document.createElement('li');
+  historyItem.textContent = `Kết quả: ${result} - Bạn chọn: ${userChoice}`;
+  historyList.insertBefore(historyItem, historyList.firstChild);
+}
+
+// Lắng nghe sự kiện khi người chơi lắc xí ngầu
+rollBtn.addEventListener('click', () => {
+  if (userChoice) {
+    rollDice();
+  } else {
+    alert('Vui lòng chọn Tài hoặc Xỉu trước!');
+  }
+});
